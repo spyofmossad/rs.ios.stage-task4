@@ -8,6 +8,9 @@ struct Element: Equatable {
 final class FillWithColor {
     
     func fillWithColor(_ image: [[Int]], _ row: Int, _ column: Int, _ newColor: Int) -> [[Int]] {
+        if image.isEmpty || row < 0 || column < 0 || row >= image.count || column >= image[0].count {
+            return image
+        }
         var outImage = image
         var queue = [Element(row: row, column: column)]
         var proceedElements = Array<Element>()
