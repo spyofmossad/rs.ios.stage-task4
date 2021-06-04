@@ -1,6 +1,6 @@
 import Foundation
 
-struct Element {
+struct Element: Equatable {
     var row: Int
     var column: Int
 }
@@ -10,10 +10,12 @@ final class FillWithColor {
     func fillWithColor(_ image: [[Int]], _ row: Int, _ column: Int, _ newColor: Int) -> [[Int]] {
         var outImage = image
         var queue = [Element(row: row, column: column)]
+        var proceedElements = Array<Element>()
         let elementColor = image[row][column]
         
         while queue.count > 0 {
             let element = queue.remove(at: 0)
+            proceedElements.append(element)
             
             if (image[element.row][element.column] == elementColor) {
                 outImage[element.row][element.column] = newColor
@@ -22,24 +24,28 @@ final class FillWithColor {
             }
             
             if (element.row - 1) >= 0 {
-                queue.append(
-                    Element(row: element.row - 1, column: element.column)
-                )
+                let element = Element(row: element.row - 1, column: element.column)
+                if !proceedElements.contains(element) {
+                    queue.append(element)
+                }
             }
             if (element.row + 1) < image.count {
-                queue.append(
-                    Element(row: element.row + 1, column: element.column)
-                )
+                let element = Element(row: element.row + 1, column: element.column)
+                if !proceedElements.contains(element) {
+                    queue.append(element)
+                }
             }
             if (element.column - 1) >= 0 {
-                queue.append(
-                    Element(row: element.row, column: element.column - 1)
-                )
+                let element = Element(row: element.row, column: element.column - 1)
+                if !proceedElements.contains(element) {
+                    queue.append(element)
+                }
             }
             if (element.column + 1) < image[row].count {
-                queue.append(
-                    Element(row: element.row, column: element.column + 1)
-                )
+                let element = Element(row: element.row, column: element.column + 1)
+                if !proceedElements.contains(element) {
+                    queue.append(element)
+                }
             }
         }
         return outImage
